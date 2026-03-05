@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>8 Марта — поздравление коллегам</title>
+  <style>
+    :root{
+      --bg1:#fff7fb;
+      --bg2:#f6fbff;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#d946ef;
+      --accent2:#22c55e;
+      --shadow: 0 10px 30px rgba(17, 24, 39, .10);
+      --shadow2: 0 16px 50px rgba(17, 24, 39, .16);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(217,70,239,.14), transparent 60%),
+        radial-gradient(1000px 500px at 90% 20%, rgba(34,197,94,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    header{
+      padding: 28px 18px 14px;
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .top{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+    }
+    .title{
+      display:flex; gap:14px; align-items:flex-start;
+    }
+    .mark{
+      width:56px; height:56px; border-radius:16px;
+      background: linear-gradient(135deg, rgba(217,70,239,.95), rgba(34,197,94,.82));
+      box-shadow: var(--shadow);
+      display:grid; place-items:center;
+      color:white; font-weight:900; letter-spacing:.4px;
+      user-select:none;
+    }
+    h1{margin:0; font-size: clamp(22px, 3.2vw, 34px); line-height:1.1}
+    .subtitle{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width: 80ch;
+      font-size: 15px;
+      line-height:1.35;
+    }
+    .controls{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+      justify-content:flex-end;
+      padding-top: 2px;
+    }
+    .input{
+      display:flex; align-items:center; gap:8px;
+      background: rgba(255,255,255,.86);
+      border:1px solid rgba(31,41,55,.10);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 24px rgba(17,24,39,.06);
+      backdrop-filter: blur(10px);
+    }
+    .input input{
+      border:0; outline:none; background:transparent;
+      min-width: 220px;
+      font-size: 14px;
+      color:var(--text);
+    }
+    .btn{
+      border:1px solid rgba(31,41,55,.10);
+      background: rgba(255,255,255,.86);
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      box-shadow: 0 8px 24px rgba(17,24,39,.06);
+      font-size: 14px;
+      color:var(--text);
+      display:inline-flex; gap:8px; align-items:center;
+      backdrop-filter: blur(10px);
+    }
+    .btn:hover{box-shadow: var(--shadow)}
+    .btn:active{transform: translateY(1px)}
+    main{
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 18px 28px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .card{
+      grid-column: span 6;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(31,41,55,.10);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(17,24,39,.06);
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .08s ease, box-shadow .12s ease;
+      backdrop-filter: blur(10px);
+    }
+    .card:hover{box-shadow: var(--shadow)}
+    .card:active{transform: translateY(1px)}
+    .card .head{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    }
+    .name{
+      margin:0;
+      font-size: 16px;
+      line-height:1.25;
+    }
+    .meta{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 13px;
+      line-height:1.3;
+    }
+    .badges{
+      margin-top: 10px;
+      display:flex; flex-wrap:wrap; gap:8px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,41,55,.10);
+      background: rgba(255,255,255,.78);
+      font-size: 12px;
+      color: var(--text);
+    }
+    .badge svg{width:16px; height:16px; display:block}
+    .badge b{font-weight:800}
+    .corner{
+      position:absolute; inset:auto -60px -60px auto;
+      width: 170px; height: 170px; border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(217,70,239,.22), rgba(34,197,94,.10), transparent 65%);
+      pointer-events:none;
+      filter: blur(.2px);
+    }
+
+    /* Featured (общая) карточка */
+    .featured{
+      grid-column: span 12;
+      padding: 18px;
+    }
+    .featured .name{font-size: 18px}
+    .featured .meta{font-size: 14px}
+    .songPreview{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(217,70,239,.35);
+      background: rgba(217,70,239,.06);
+      color: #4b5563;
+      font-size: 13px;
+      line-height:1.35;
+      white-space: pre-wrap;
+      max-height: 120px;
+      overflow:hidden;
+    }
+
+    /* Modal */
+    dialog{
+      width:min(940px, 95vw);
+      border:0;
+      border-radius: 22px;
+      padding: 0;
+      box-shadow: 0 30px 80px rgba(0,0,0,.26);
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+    }
+    dialog::backdrop{
+      background: rgba(17,24,39,.55);
+    }
+    .modal{ padding: 18px; }
+    .modalTop{
+      display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap;
+    }
+    .modalTitle{ display:flex; gap:12px; align-items:flex-start; }
+    .avatar{
+      width:54px; height:54px; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(217,70,239,.92), rgba(34,197,94,.75));
+      display:grid; place-items:center;
+      color:white; font-weight:900;
+      box-shadow: 0 10px 30px rgba(17,24,39,.12);
+      user-select:none;
+    }
+    .modal h2{margin:0; font-size: 20px; line-height:1.15}
+    .modal .small{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 14px;
+      max-width: 75ch;
+      line-height:1.35;
+      white-space: pre-wrap;
+    }
+    .closeRow{display:flex; gap:10px; align-items:center}
+    .xbtn{
+      border: 1px solid rgba(31,41,55,.12);
+      background: rgba(255,255,255,.86);
+      border-radius: 14px;
+      padding: 10px 12px;
+      cursor:pointer;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(17,24,39,.08);
+    }
+    .xbtn:hover{box-shadow: var(--shadow2)}
+    .xbtn:active{transform: translateY(1px)}
+    .sections{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .section{
+      border: 1px solid rgba(31,41,55,.10);
+      background: rgba(255,255,255,.80);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .section h3{
+      margin:0 0 10px;
+      font-size: 14px;
+      letter-spacing:.2px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .section p{margin:0; color:var(--text); line-height:1.5; font-size: 14px; white-space: pre-wrap;}
+    .list{margin:0; padding-left: 18px; color:var(--text); line-height:1.55; font-size: 14px;}
+    .footerNote{
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(31,41,55,.14);
+      background: rgba(255,255,255,.7);
+      color: #374151;
+    }
+
+    @media (max-width: 840px){
+      .card{grid-column: span 12;}
+      .sections{grid-template-columns: 1fr;}
+      .input input{min-width: 160px;}
+    }
+
+    @media print{
+      header,.controls,.footerNote,.xbtn{display:none !important;}
+      body{background:white}
+      main{padding:0}
+      .grid{gap:10px}
+      .card{box-shadow:none}
+      dialog{box-shadow:none}
+      dialog::backdrop{background:transparent}
+    }
+  
+    /* DSP secret button */
+    #dspBtn{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 800;
+      letter-spacing: .4px;
+      cursor: pointer;
+      color: #fff;
+      background: #dc2626; /* red */
+      box-shadow: 0 14px 40px rgba(220,38,38,.35);
+    }
+    #dspBtn:hover{filter: brightness(1.05)}
+    #dspBtn:active{transform: translateY(1px)}
+    </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div class="title">
+        <div class="mark">8</div>
+        <div>
+          <h1>С 8 Марта, дорогие коллеги!</h1>
+          <p class="subtitle">
+            От мужского коллектива — спасибо за вашу доброту, профессионализм и ту самую атмосферу, которая держит наш рабочий ритм на высоте.
+            Нажмите на карточку, чтобы открыть её полностью.
+          </p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label class="input" title="Поиск по имени, титулу, фразам и привычкам">
+          <span aria-hidden="true">🔎</span>
+          <input id="q" placeholder="Поиск по карточкам…" />
+        </label>
+        <button class="btn" id="btnAll" title="Сбросить поиск">Показать все</button>
+        <button class="btn" id="btnPrint" title="Печать/Сохранить в PDF">🖨️ Печать</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+
+    <dialog id="dlg">
+      <div class="modal" id="modal"></div>
+    </dialog>
+  </main>
+
+  <script>
+    // Иконки-бейджи (inline SVG) — без внешних библиотек, чтобы работало везде.
+    const Icons = {
+      heart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>`,
+      bolt:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`,
+      scale: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v18"/><path d="M6 7h12"/><path d="M7 7l-4 7a5 5 0 0 0 10 0L9 7"/><path d="M17 7l-4 7a5 5 0 0 0 10 0l-4-7"/><path d="M6 21h12"/></svg>`,
+      coffee:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h13v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M16 10h3a2 2 0 0 1 0 4h-3"/><path d="M6 2v3"/><path d="M10 2v3"/><path d="M14 2v3"/></svg>`,
+      sun:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>`,
+      clock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
+      car:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 16l1-5 2-5h12l2 5 1 5"/><path d="M5 16h14"/><circle cx="7" cy="16.5" r="1.5"/><circle cx="17" cy="16.5" r="1.5"/></svg>`,
+      file: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h8"/><path d="M8 9h3"/></svg>`,
+      people:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+      trophy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v3a5 5 0 0 1-10 0V4z"/><path d="M5 7H3V5h2"/><path d="M19 7h2V5h-2"/><path d="M7 4V2h10v2"/></svg>`,
+      snow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M12 2v20"/><path d="M4.93 4.93l14.14 14.14"/><path d="M19.07 4.93L4.93 19.07"/>
+        <path d="M2 12h20"/><path d="M6 8l2 2"/><path d="M16 8l-2 2"/><path d="M6 16l2-2"/><path d="M16 16l-2-2"/>
+      </svg>`,
+      wand:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 4l5 5"/><path d="M13 6l5 5"/><path d="M2 22l10-10"/><path d="M3 16l5 5"/><path d="M16 3l-2 2"/><path d="M21 8l-2 2"/><path d="M14 2l1 1"/><path d="M22 10l1 1"/></svg>`
+    };
+
+    const song = `В самом центре в лесу, где грохочут машины,
+Где течет, изгибаясь, наша Волга река,
+В кабинетах своих парни ночью сидели
+И при этом напевали важные слова
+
+А Вы лучше всех, а Вы лучше всех,
+Пусть забыли Вы жалобу свою,
+Дело есть у Вас каждый ровно час
+Показать свою – супер красоту!
+
+А заданья они продолжают рождаться,
+Из центральных полей порученья летят,
+Пишут парни свою песню-оду в ненастье
+И с желанием все быстрее песенку поют.
+
+А Вы лучше всех, А Вы лучше всех,
+Видим каждый день Вашу красоту,
+Дело есть у Вас каждый ровно час
+Всем дарить свои – ум и доброту!
+
+А Вы лучше всех, а Вы лучше всех,
+Точно знаем мы это не слова,
+Счастлив станет тот, кто хоть разик в год
+Видит Ваши – ясные глаза!
+
+А Вы лучше всех, а Вы лучше всех,
+Стали Вы для нас центром торжества,
+Поздравляем Вас в этот праздник Ваш,
+Будьте счастливы – здесь и навсегда!`;
+
+    const featured = {
+      type: "featured",
+      name: "Общее поздравление от мужского коллектива",
+      meta: "Нажмите, чтобы открыть поздравление и песню полностью.",
+      title: "💐 Спасибо вам за красоту, ум и доброту!",
+      congrats:
+        "Дорогие коллеги!\n\n" +
+        "С 8 Марта! Пусть весна принесёт вдохновение, теплоту, улыбки и приятные сюрпризы.\n" +
+        "Пусть рабочие задачи решаются легче, а дома всегда ждут поддержка и любовь.\n\n" +
+        "Мы рядом — если нужно подхватить, помочь или просто сказать: «Вы — лучшие!»",
+      song,
+      badges: [
+        {icon:"heart", label:"От", value:"мужского коллектива"},
+        {icon:"sun", label:"Пожелание", value:"тёплой весны"},
+        {icon:"trophy", label:"Факт", value:"вы — лучшие"},
+      ]
+    };
+
+    const staff = [
+      {
+        id: 1,
+        name: "Байкова Ольга Викторовна",
+        video: "videos/Байкова.mp4",
+        trait: "Доброта и отзывчивость.",
+        habits: ["Любит детей", "кофе", "интернет-магазины"],
+        quotes: ["«Мой Ильдар — самый красивый!»", "«Я не домой, я машину просто заведу.»"],
+        title: "🏆 Королева нежного взгляда и доброты.",
+        congrats: "Спасибо за доброту, отзывчивость и ту тёплую атмосферу, которую вы создаёте вокруг себя.\nА Ваш кабинет пусть остаётся штабом, в котором обсуждаются самые важные рабочие вопросы.\nПусть весна приносит радость и вдохновение!",
+        badges: [
+          {icon:"heart", label:"Главное", value:"доброта"},
+          {icon:"coffee", label:"Топливо", value:"кофе"},
+          {icon:"people", label:"Суперсила", value:"тёплая атмосфера"},
+        ]
+      },
+      {
+        id: 2,
+        name: "Лукоянова Кристина Владимировна",
+        video: "videos/Лукоянова.mp4",
+        trait: "Настойчивость и умение добиваться своего.",
+        habits: ["Любит перечитывать Трудовой кодекс с комментариями", "предпочитает французский автопром", "но в душе хотела бы Ладу Весту"],
+        quotes: ["«АППГ по искам мы не сделаем.»"],
+        title: "🏆 Повелительница трудового законодательства.",
+        congrats: "Благодарим за отзывчивость, внимание и чуткость, умение организовать труд будущих юристов.\nПусть весна принесёт много улыбок, а доброта вернётся многократно!",
+        badges: [
+          {icon:"scale", label:"Стихия", value:"трудовое право"},
+          {icon:"file", label:"Любимое", value:"кодекс"},
+          {icon:"car", label:"Авто", value:"французский стиль"},
+        ]
+      },
+      {
+        id: 3,
+        name: "Тараканова Юлия Александровна",
+        video: "videos/Тараканова.mp4",
+        trait: "Стрессоустойчивость.",
+        habits: ["Любит, когда у заявителей нет долгов по ЖКХ", "не любит зависания ГИС ЖКХ", "терпеть не может пробки в сторону Кстово"],
+        quotes: ["«Сейчас ДУК с Водоканалом разберутся, чья это труба, и мы вам перезвоним.»"],
+        title: "🏆 Обладательница самого холодного кабинета конторы.",
+        congrats: "Благодарим за искренность, умение отстаивать свою правоту и решение вопросов, затрагивающих весь коллектив.\nПусть сбудутся все мечты, а выходные приносят яркие моменты и дают сил на новые свершения!",
+        badges: [
+          {icon:"bolt", label:"Режим", value:"анти-стресс"},
+          {icon:"snow", label:"Кабинет", value:"самый холодный"},
+          {icon:"clock", label:"Темп", value:"всегда в деле"},
+        ]
+      },
+      {
+        id: 4,
+        name: "Королькова Ирина Алексеевна",
+        video: "videos/Королькова.mp4",
+        trait: "Исполнительность и умение применять нестандартные решения.",
+        habits: ["Иногда приходит на работу даже в 7 утра", "мечтает об отсутствии задолженности по алиментам", "и ровных дорогах"],
+        quotes: ["«Мне проще самой напечатать.»"],
+        title: "🏆 Ранняя пташка прокуратуры района.",
+        congrats: "Благодарим за трудолюбие, пунктуальность и умение найти подход к людям.\nПусть новый этап в жизни будет счастливым, а родные и близкие станут опорой и поддержкой!",
+        badges: [
+          {icon:"clock", label:"Старт", value:"07:00"},
+          {icon:"file", label:"Навык", value:"сделаю сама"},
+          {icon:"sun", label:"Пожелание", value:"лёгкой весны"},
+        ]
+      },
+      {
+        id: 5,
+        name: "Серпухова Ольга Юрьевна",
+        video: "videos/Серпухова.mp4",
+        trait: "Спокойствие и выдержка.",
+        habits: ["Всегда сохраняет самообладание даже в самые напряжённые рабочие дни"],
+        quotes: [],
+        title: "🏆 Миссис уравновешенность Нижегородского района.",
+        congrats: "От мужского коллектива — большое спасибо за выдержанность, доброту и спокойствие.\nПусть весна будет тёплой, работа интересной, а отдых полноценным!",
+        badges: [
+          {icon:"sun", label:"Аура", value:"спокойствие"},
+          {icon:"people", label:"Команда", value:"надёжность"},
+          {icon:"heart", label:"Качество", value:"доброта"},
+        ]
+      },
+      {
+        id: 6,
+        name: "Мальцева Анжела Олеговна",
+        video: "videos/Мальцева.mp4",
+        trait: "Энергичность и позитив. Собирает всех на корпоратив, придумывает конкурсы, танцует и зажигает. Когда следующий? :)",
+        habits: ["Кофе — главное не пролить", "работа — на 100 баллов", "корпоратив — обязательно"],
+        quotes: [],
+        title: "🏆 Массовик-затейник Нижегородского района.",
+        congrats: "Спасибо за энергичность, положительные эмоции и внимание к коллективу.\nПусть весна будет светлой, работа приносит удовольствие, а отдых будет приятным!",
+        badges: [
+          {icon:"bolt", label:"Драйв", value:"100/100"},
+          {icon:"coffee", label:"Кофе", value:"не пролить"},
+          {icon:"people", label:"Талант", value:"зажигает"},
+        ]
+      },
+      {
+        id: 7,
+        name: "Верстукова Лариса Вячеславовна",
+        video: "videos/Верстукова.mp4",
+        trait: "Спокойствие и надёжность. Встаёт на лыжи, приезжает первой!",
+        habits: ["Лыжи — да", "дольщики — в обиду не дам", "путешествия — обязательно"],
+        quotes: [],
+        title: "🏆 Спорт-леди Нижегородского района.",
+        congrats: "Спасибо за долголетнюю и плодотворную работу в коллективе прокуратуры Нижегородского района.\nПусть весна будет яркой, работа приятной, а отдых насыщенным!",
+        badges: [
+          {icon:"sun", label:"Ритм", value:"движение"},
+          {icon:"people", label:"Защита", value:"дольщики"},
+          {icon:"trophy", label:"Титул", value:"спорт-леди"},
+        ]
+      },
+      {
+        id: 8,
+        name: "Малиновская Екатерина Евгеньевна",
+        video: "videos/Малиновская.mp4",
+        trait: "Открытость и неравнодушие.",
+        habits: ["Всегда готова прийти на помощь гражданам", "излучает позитив и уверенность"],
+        quotes: ["«Надо уточниться.»"],
+        title: "🏆 Добро должно быть с кулаками.",
+        congrats: "Спасибо за доброту, открытость и трепетное отношение к гражданам.\nПусть весна приносит больше новых впечатлений и ярких моментов!",
+        badges: [
+          {icon:"heart", label:"Главное", value:"неравнодушие"},
+          {icon:"scale", label:"Дело", value:"помощь людям"},
+          {icon:"bolt", label:"Настрой", value:"позитив"},
+        ]
+      },
+      {
+        id: 9,
+        name: "Бизяева Варвара Николаевна",
+        video: "videos/Бязяева.mp4",
+        trait: "Ответственность и инициативность.",
+        habits: ["Комплексно подходит к рассмотрению обращений", "всегда готова помочь коллегам", "Хранящая секреты ", "Эксклюзивный обладатель сертификата «пью только на овсяном» ",  "Виртуоз многозадачности"],
+        quotes: ["«Куку-ляля.»", "«Давайте вот это подпишем.»"],
+        title: "🏆 Королева укрытых. Появляется эффектно, возбуждает по 15 уголовных дел за раз , отчёт становится полнее, а руководство довольнее !",
+        congrats: "От мужского коллектива - большое спасибо за вдумчивое и ответственное отношение к работе , разумную инициативу и умение всегда выполнить поставленную задачу лучше, чем требовалось . Благодарим за комплексный подход к рассмотрению обращений и довольных заявителей.  Вы уникальный человек , который всегда готов прийти на помощь в любой ситуации ! Вы наш свет в конце коридора первого этажа ! Спасибо за Вашу улыбку и неизменно хорошее настроение ! Тёплых весенних дней и ароматных чашек кофе ",
+        badges: [
+          {icon:"file", label:"Стиль", value:"комплексно"},
+          {icon:"people", label:"Команда", value:"поддержка"},
+          {icon:"trophy", label:"Титул", value:"королева"},
+        ]
+      },
+      {
+        id: 10,
+        name: "Балагурова Анастасия Сергеевна",
+        video: "videos/Балагурова.mp4",
+        trait: "Профессионализм и внимательность.",
+        habits: ["С лёгкостью и непринуждённостью учит работников уголовного розыска устанавливать и опрашивать лиц, находящихся за пределами Нижегородской области. Показывает как нужно четко и быстро осматривать 18 видеозаписей за 8 минут!"],
+        quotes: [],
+        title: "🏆 Маэстро осмотра видеозаписей.",
+        congrats: "спасибо за Вашу искренность , честность и открытость в работе ! Благодарим за проявляемые каждый четверг чуткость, терпение и внимание к гражданам , за рекордно быстрое и качественное рассмотрение обращений ! Вы наш луч солнца в учетно-регистрационной дисциплине! Защитник граждан и опора уголовного розыска ! Весеннего настроения и ярких впечатлений с любимым домашним питомцем !",
+        badges: [
+          {icon:"file", label:"Фокус", value:"внимательность"},
+          {icon:"bolt", label:"Скорость", value:"быстро"},
+          {icon:"trophy", label:"Титул", value:"маэстро"},
+        ]
+      },
+      {
+        id: 11,
+        name: "Баранова Ирина Васильевна",
+        video: "videos/Баранова.mp4",
+        trait: "Доброта и трудолюбие.",
+        habits: ["Старший государственный обвинитель", "каждое утро начинается с кофе"],
+        quotes: [],
+        title: "🏆 Королева прений.",
+        congrats: "От мужского коллектива — спасибо за то, что смело и красиво организуешь работу УСО и всегда помогаешь коллегам.\nПусть весна наполнит каждый день красками!",
+        badges: [
+          {icon:"scale", label:"Роль", value:"гособвинитель"},
+          {icon:"coffee", label:"Утро", value:"кофе"},
+          {icon:"trophy", label:"Титул", value:"прения"},
+        ]
+      },
+      {
+        id: 12,
+        name: "Романова Карина Александровна",
+        video: "videos/Романова.mp4",
+        trait: "Спокойствие и оптимизм.",
+        habits: ["Любит чай", "знает, где самая вкусная выпечка", "По-настоящему умеет хранить секреты", "Знает репортеров программы «Кстати по именам»"],
+        quotes: [],
+        title: "🏆 Эталон спокойствия и умиротворения.",
+        congrats: "Спасибо за атмосферу спокойствия и доброжелательности, которую вы создаёте в коллективе.\nПусть весна принесёт больше улыбок и приятных моментов!",
+        badges: [
+          {icon:"sun", label:"Аура", value:"умиротворение"},
+          {icon:"coffee", label:"Напиток", value:"чай"},
+          {icon:"heart", label:"Эффект", value:"улыбки"},
+        ]
+      },
+      {
+        id: 13,
+        name: "Гурьянова Яна Алексеевна",
+        video: "videos/Гурьянова.mp4",
+        trait: "Энергичность и настойчивость.",
+        habits: ["Постоянно в процессах или за клавиатурой"],
+        quotes: ["«Всё будет нори.»"],
+        title: "🏆 Любимица и гордость всех судей.",
+        congrats: "Спасибо за энергию и бодрость, которые вы привносите в коллектив.\nПусть весна принесёт новые профессиональные достижения!",
+        badges: [
+          {icon:"bolt", label:"Режим", value:"в процессе"},
+          {icon:"file", label:"Инструмент", value:"клавиатура"},
+          {icon:"trophy", label:"Титул", value:"гордость"},
+        ]
+      },
+      {
+        id: 14,
+        name: "Беляева Елена Викторовна",
+        video: "videos/Беляева.mp4",
+        trait: "Позитивная энергия.",
+        habits: ["Мост между гражданским судом и прокуратурой", "пилот за штурвалом автомобиля"],
+        quotes: [],
+        title: "🏆 Энергетик Нижегородской районной прокуратуры.",
+        congrats: "Благодарим за неиссякаемый источник позитивной энергии, который помогает поддерживать исковые будни на должной высоте.\nСолнечных весенних дней и ярких танцевальных ночей!",
+        badges: [
+          {icon:"bolt", label:"Энергия", value:"1000%"},
+          {icon:"car", label:"Роль", value:"пилот"},
+          {icon:"people", label:"Связь", value:"мост"},
+        ]
+      },
+      {
+        id: 15,
+        name: "Лунева Елена Сергеевна",
+        video: "videos/Лунева.mp4",
+        trait: "Спокойствие и внимательность.",
+        habits: ["Хранительница традиций прокуратуры Нижегородского района", "мастер управления документами", "управляющий банка денежных конвертов", "обладатель тайными познаниями в сфере IT", "владелец складов макулатуры"],
+        quotes: [],
+        title: "🏆 Укротитель хаоса прокуратуры Нижегородского района, верим, что с ее помощью жизненные «входящие» принесут добрые вести, а «исходящие» - радость и успех.",
+        congrats: "Спасибо за спокойствие в любой суете и внимательное управление рабочими процессами.\nПусть весна подарит море улыбок и новых успехов!",
+        badges: [
+          {icon:"file", label:"Сила", value:"документы"},
+          {icon:"sun", label:"Аура", value:"спокойствие"},
+          {icon:"trophy", label:"Титул", value:"хаос"},
+        ]
+      },
+      {
+        id: 16,
+        name: "Ланина Алёна Сергеевна",
+        video: "videos/Ланина.mp4",
+        trait: "Терпение и ответственность.",
+        habits: ["Путеводитель по закоулкам веб-надзора, жаворонок прокуратуры"],
+        quotes: [],
+        title: "🏆 Хранитель эмоций, благодаря  ей журнал регистраций станет книгой благодарностей,",
+        congrats: "Благодарим за создание фундамента доверия граждан к нашей работе. Вы наш заслон перед потоком человеческих проблем, Ваша работа - основной и важный этап в восстановлении справедливости. Благодаря Вам у нас всегда есть увлекательное занятие! \nПусть весна принесёт больше радости и добрых событий!",
+        badges: [
+          {icon:"heart", label:"Качество", value:"терпение"},
+          {icon:"scale", label:"Сфера", value:"веб-надзор"},
+          {icon:"trophy", label:"Титул", value:"хранитель"},
+        ]
+      },
+      {
+        id: 17,
+        name: "Евстропова Татьяна Владимировна",
+        video: "videos/Евстропова.mp4",
+        trait: "Общительность и дружелюбие.",
+        habits: ["Раньше всех приходит в суд", "решает вопросы с системным администратором"],
+        quotes: [],
+        title: "🏆 Хранитель спокойствия УСО.",
+        congrats: "Спасибо за позитив и жизнелюбие, которые вы привносите в коллектив.\nПусть весна принесёт новые открытия и профессиональные успехи!",
+        badges: [
+          {icon:"clock", label:"Фора", value:"раньше всех"},
+          {icon:"people", label:"Навык", value:"дружелюбие"},
+          {icon:"file", label:"Миссия", value:"всё работает"},
+        ]
+      },
+      {
+        id: 18,
+        name: "Ведерникова Александра Дмитриевна",
+        video: "videos/Ведерникова.mp4",
+        trait: "Точность, спокойствие и терпение.",
+        habits: [
+          "Беспрецедентно точное направление отчётов в прокуратуру области",
+          "Бескорыстное ежемесячное предоставление своего рабочего места и компьютера",
+          "Действенный надзор за следственным органом",
+          "Безукоризненная работа с особо секретными материалами",
+          "Сопоставит несопоставимое, учтёт неучтённое и логически объяснит любое расхождение",
+          "Блюститель разумных сроков"
+        ],
+        quotes: [],
+        title: "🏆 Укротитель отчётов.",
+        congrats: "Спасибо Вам за беспрецедентно точное направление отчётов в прокуратуру области, бескорыстное ежемесячное предоставление своего рабочего места и компьютера!\nБлагодарим за действенный надзор за следственным органом и безукоризненную работу с особо секретными материалами!\n\nСпокойствие и терпение, исходящие от Вас, укрепляют веру в светлое рабочее будущее на втором этаже!\nБольше светлых моментов в эти весенние дни, хорошего настроения и искренних улыбок!",
+        badges: [
+          {icon:"file", label:"Номинация", value:"укротитель отчётов"},
+          {icon:"clock", label:"Сроки", value:"разумные"},
+          {icon:"scale", label:"Надзор", value:"действенный"},
+        ],
+        extras: ["Царица АРМ", "Виртуоз следствия", "Блюститель разумных сроков"]
+      },
+      {
+        id: 19,
+        name: "Соболева Оксана Андреевна",
+        video: "videos/Соболева.mp4",
+        trait: "Трудолюбие и самоотдача.",
+        habits: ["Любит изучать новое законодательство", "внимательно следит за изменениями"],
+        quotes: ["«Давайте так пока подпишем.»"],
+        title: "🏆 Королева в области медицины.",
+        congrats: "Благодарим за коммуникабельность и умение находить решения даже в сложных ситуациях.\nПусть весна принесёт удачу и хорошее настроение!",
+        badges: [
+          {icon:"scale", label:"Стихия", value:"закон"},
+          {icon:"file", label:"Фокус", value:"новое"},
+          {icon:"trophy", label:"Титул", value:"медицина"},
+        ]
+      },
+    ];
+
+    function safeIcon(name){ return Icons[name] || Icons.wand; }
+
+    const grid = document.getElementById("grid");
+    const dlg = document.getElementById("dlg");
+    const modal = document.getElementById("modal");
+    const q = document.getElementById("q");
+
+    function initials(name){
+      const parts = name.trim().split(/\s+/);
+      if(parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+      return (parts[0][0] + (parts[1]?.[0]||"")).toUpperCase();
+    }
+
+    function escapeHtml(s){
+      return String(s ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function cardHTML(item){
+      const badges = (item.badges || []).slice(0,3).map(b => `
+        <span class="badge" title="${escapeHtml(b.label)}: ${escapeHtml(b.value)}">
+          ${safeIcon(b.icon)}
+          <span><b>${escapeHtml(b.label)}:</b> ${escapeHtml(b.value)}</span>
+        </span>
+      `).join("");
+
+      const meta = item.type === "featured"
+        ? item.meta
+        : `${item.trait} ${item.title}`;
+
+      const songPreview = item.type === "featured"
+        ? `<div class="songPreview">${escapeHtml(item.song.slice(0, 520))}${item.song.length>520 ? "…" : ""}</div>`
+        : "";
+
+      return `
+        <article class="card ${item.type === "featured" ? "featured" : ""}" data-id="${item.id || "featured"}" role="button" tabindex="0">
+          <div class="corner"></div>
+          <div class="head">
+            <div>
+              <h3 class="name">${escapeHtml(item.name)}</h3>
+              <div class="meta">${escapeHtml(meta)}</div>
+            </div>
+          </div>
+          <div class="badges">${badges}</div>
+          ${songPreview}
+        </article>
+      `;
+    }
+
+    function render(list){
+      grid.innerHTML = cardHTML(featured) + list.map(cardHTML).join("");
+      [...grid.querySelectorAll(".card")].forEach(el => {
+        el.addEventListener("click", () => openByElement(el));
+        el.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openByElement(el); }
+        });
+      });
+    }
+
+    function openByElement(el){
+      const id = el.getAttribute("data-id");
+      if(id === "featured"){ openModal(featured); return; }
+      const item = staff.find(s => String(s.id) === String(id));
+      if(item) openModal(item);
+    }
+
+    function blockList(title, items){
+      if(!items || !items.length) return "";
+      return `<div class="section">
+        <h3>${title}</h3>
+        <ul class="list">${items.map(x => `<li>${escapeHtml(x)}</li>`).join("")}</ul>
+      </div>`;
+    }
+
+    function openModal(item){
+      
+      const videoBlock = item.video ? `
+        <div class="section" style="grid-column: 1 / -1;">
+          <h3>🎬 Видео</h3>
+          <video controls playsinline preload="metadata" style="width:100%; border-radius:16px;">
+            <source src="${escapeHtml(item.video)}" type="video/mp4">
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
+      ` : ``;
+const isFeatured = item.type === "featured";
+      const avatarText = isFeatured ? "8M" : initials(item.name);
+      const badges = (item.badges || []).map(b => `
+        <span class="badge">
+          ${safeIcon(b.icon)}
+          <span><b>${escapeHtml(b.label)}:</b> ${escapeHtml(b.value)}</span>
+        </span>
+      `).join("");
+
+      const traitBlock = isFeatured ? "" : `
+        <div class="section">
+          <h3>⭐ Главная черта</h3>
+          <p>${escapeHtml(item.trait)}</p>
+        </div>`;
+
+      const habitsBlock = blockList("🎯 Особенности / привычки", item.habits);
+      const quotesBlock = blockList("💬 Любимые фразы", item.quotes);
+
+      const extrasBlock = blockList("🏅 Отличия", item.extras);
+
+      const songBlock = isFeatured
+        ? `<div class="section" style="grid-column: 1 / -1;">
+             <h3>🎶 Песня</h3>
+             <p>${escapeHtml(item.song)}</p>
+           </div>`
+        : "";
+
+      modal.innerHTML = `
+        <div class="modalTop">
+          <div class="modalTitle">
+            <div class="avatar">${escapeHtml(avatarText)}</div>
+            <div>
+              <h2>${escapeHtml(item.name)}</h2>
+              <div class="small">${escapeHtml(isFeatured ? item.title : item.title)}</div>
+            </div>
+          </div>
+          <div class="closeRow">
+            <button class="xbtn" id="btnPrintOne" title="Печать/Сохранить в PDF">🖨️ Печать</button>
+            <button class="xbtn" id="btnClose" title="Закрыть (Esc)">✖ Закрыть</button>
+          </div>
+        </div>
+
+        <div class="badges" style="margin-top:12px">${badges}</div>
+
+        <div class="sections">
+          <div class="section">
+            <h3>💐 Поздравление</h3>
+            <p>${escapeHtml(item.congrats)}</p>
+          </div>
+
+          ${traitBlock || `<div class="section"><h3>✨</h3><p>${escapeHtml(isFeatured ? "С праздником!" : "")}</p></div>`}
+          ${habitsBlock}
+          ${quotesBlock}
+          ${extrasBlock}
+          ${songBlock}
+        </div>
+
+        ${videoBlock}
+        <div class="footerNote">
+          <span>Подсказка: закрыть можно клавишей <span class="kbd">Esc</span>.</span>
+          <span>Сделано к 8 Марта 🌷</span>
+        </div>
+      `;
+
+      // Удаляем возможные пустые "пустышки" в сетке (если блоки не вернулись)
+      // (traitBlock для featured заменяем на маленький блок, чтобы сетка выглядела ровно)
+      // Закрытие и печать
+      modal.querySelector("#btnClose").onclick = () => dlg.close();
+      modal.querySelector("#btnPrintOne").onclick = () => window.print();
+
+      dlg.showModal();
+    }
+
+    function normalize(s){
+      return String(s||"").toLowerCase().replace(/ё/g,"е").trim();
+    }
+    function matches(item, query){
+      if(!query) return true;
+      const hay = [
+        item.name, item.trait, item.title,
+        ...(item.habits||[]),
+        ...(item.quotes||[]),
+        ...(item.extras||[]),
+        item.congrats
+      ].map(normalize).join(" ");
+      return hay.includes(query);
+    }
+
+    q.addEventListener("input", () => {
+      const query = normalize(q.value);
+      const filtered = staff.filter(s => matches(s, query));
+      render(filtered);
+    });
+
+    document.getElementById("btnAll").addEventListener("click", () => {
+      q.value = "";
+      render(staff);
+    });
+    document.getElementById("btnPrint").addEventListener("click", () => window.print());
+
+    window.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && dlg.open) dlg.close();
+    });
+
+    render(staff);
+    // --- ДСП кнопка ---
+
+    function openDSP(){
+      const dspSrc = "videos/ДСП.mp4";
+      modal.innerHTML = `
+        <div class="modalTop">
+          <div class="modalTitle">
+            <div class="avatar">ДСП</div>
+            <div>
+              <h2>ДСП</h2>
+              <div class="small">Доступ по красной кнопке.</div>
+            </div>
+          </div>
+          <div class="closeRow">
+            <button class="xbtn" id="btnClose" title="Закрыть (Esc)">✖ Закрыть</button>
+          </div>
+        </div>
+
+        <div class="sections" style="grid-template-columns: 1fr;">
+          <div class="section">
+            <h3>🎬 Видео</h3>
+            <video controls playsinline preload="metadata" style="width:100%; border-radius:16px;">
+              <source src="${dspSrc}" type="video/mp4">
+              Ваш браузер не поддерживает видео.
+            </video>
+          </div>
+        </div>
+
+        <div class="footerNote">
+          <span>Закрыть можно <span class="kbd">Esc</span>.</span>
+          <span>🌷</span>
+        </div>
+      `;
+      modal.querySelector("#btnClose").onclick = () => dlg.close();
+      dlg.showModal();
+    }
+
+</script>
+
+  <button id="dspBtn" title="ДСП" onclick="openDSP()">ДСП</button>
+</body>
+</html>
